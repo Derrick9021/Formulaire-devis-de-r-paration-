@@ -116,9 +116,19 @@
     }
 
     @media print {
-      .btn-print {
+      .btn-print, .add-row {
         display: none;
       }
+    }
+
+    .add-row {
+      background-color: #007b5e;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-bottom: 10px;
     }
   </style>
 </head>
@@ -160,6 +170,8 @@
     </div>
   </div>
 
+  <button class="add-row" onclick="addRow()">+ Ajouter une ligne</button>
+
   <table>
     <thead>
       <tr>
@@ -172,13 +184,12 @@
     <tbody id="items-table">
       <tr>
         <td><input type="text"></td>
-        <td><input type="number" min="1" class="qty"></td>
-        <td><input type="number" step="0.01" class="price"></td>
+        <td><input type="number" min="1" class="qty" oninput="updateTotals()"></td>
+        <td><input type="number" step="0.01" class="price" oninput="updateTotals()"></td>
         <td><input type="number" step="0.01" class="line-total" readonly></td>
       </tr>
     </tbody>
   </table>
-
 
   <div class="form-section">
     <div class="form-group">
@@ -269,6 +280,18 @@
       grandTotalField.value = grandTotal.toFixed(2);
     }
 
+    function addRow() {
+      const newRow = document.createElement('tr');
+      newRow.innerHTML = `
+        <td><input type="text"></td>
+        <td><input type="number" min="1" class="qty" oninput="updateTotals()"></td>
+        <td><input type="number" step="0.01" class="price" oninput="updateTotals()"></td>
+        <td><input type="number" step="0.01" class="line-total" readonly></td>
+      `;
+      table.appendChild(newRow);
+    }
+
+    // Initial event listeners
     table.addEventListener('input', updateTotals);
     tvaField.addEventListener('input', updateTotals);
     promoField.addEventListener('input', updateTotals);
@@ -277,8 +300,8 @@
 </body>
 
 <footer style="background-color: #f1f1f1; text-align: center; padding: 15px 0; margin-top: 50px; border-top: 1px solid #ccc;">
-    <p style="margin: 0; font-size: 14px; color: #333;">
-        &copy; 2025 - Réalisé par <strong>Derrick HOUNDAGNON</strong>
-    </p>
+  <p style="margin: 0; font-size: 14px; color: #333;">
+    &copy; 2025 - Réalisé par <strong>Derrick HOUNDAGNON</strong>
+  </p>
 </footer>
 </html>
